@@ -1,7 +1,10 @@
 use std::fs;
 use std::io::{prelude::*, BufReader};
 
+mod argparser;
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    argparser::parse_arg()?;
 
     for path_result in fs::read_dir("./test")? {
         let path = path_result?;
