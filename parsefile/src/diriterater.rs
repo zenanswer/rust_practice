@@ -3,9 +3,8 @@ use std::io::{prelude::*, BufReader};
 
 pub fn iterate_dir(
     dir: &String,
-    func: fn(&String) -> Result<i32, Box<dyn std::error::Error>>)
-    -> Result<(), Box<dyn std::error::Error>> {
-
+    func: fn(&String) -> Result<i32, Box<dyn std::error::Error>>,
+) -> Result<(), Box<dyn std::error::Error>> {
     for path_result in fs::read_dir(dir)? {
         let path = path_result?;
         println!("Dir name: {}", path.path().display());
