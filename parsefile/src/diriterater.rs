@@ -1,7 +1,10 @@
 use std::fs;
 use std::io::{prelude::*, BufReader};
 
-pub fn iterate_dir(dir: &String)-> Result<(), Box<dyn std::error::Error>> {
+pub fn iterate_dir(
+    dir: &String,
+    func: fn(&String) -> Result<i32, Box<dyn std::error::Error>>)
+    -> Result<(), Box<dyn std::error::Error>> {
 
     for path_result in fs::read_dir(dir)? {
         let path = path_result?;
@@ -12,11 +15,8 @@ pub fn iterate_dir(dir: &String)-> Result<(), Box<dyn std::error::Error>> {
         for line_result in reader.lines() {
             let line = line_result?;
             println!("RAW: {}", line);
-            match line.trim().parse::<i32>() {
-                Ok(num) =>
-                    println!("Int: {}", num),
-                Err(err) =>
-                    println!("Err: \"{}\" {}", line.trim(), err),
+            if let Ok(num) = func(&line) {
+                println!("Got int: {}", num);
             }
         }
     }
