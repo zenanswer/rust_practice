@@ -21,16 +21,20 @@ pub fn parse_arg() -> Result<Vec<String>, Box<dyn std::error::Error>> {
         .arg(Arg::with_name("dir-list")
                  .short("d")
                  .long("dirs")
-                 .takes_value(true)
-                 .required(true)
+                 //.takes_value(true)
+                 //.required(true)
                  .min_values(1)
                  .help("A list of dir"))
         .get_matches();
 
+        let mut dirs = Vec::new();
         if let Some(dir_list) = matches.values_of("dir-list") {
             for dir in dir_list {
-                println!("list: {}", dir);
+                dirs.push(String::from(dir));
             }
         }
-    Err("Bad request")?
+        if dirs.len() > 0 {
+            return Ok(dirs)
+        }
+    Err("Bad parameter.")?
 }
